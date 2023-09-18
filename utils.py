@@ -14,7 +14,7 @@ def write_json_by_file(path: str) -> None:
     answers = []
     data = {}
     for file in dirs:
-        with open(f'{path}/{file}', 'r', encoding='KOI8-R') as f, open('questions.json', 'w', encoding='UTF-8') as fw:
+        with open(f'{path}/{file}', 'r', encoding='KOI8-R') as f, open('BotForQuiz/questions.json', 'w', encoding='UTF-8') as fw:
             quiz = f.read()
             qa = quiz.split('\n\n')
             for trivia in qa:
