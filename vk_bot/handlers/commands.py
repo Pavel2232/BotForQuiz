@@ -1,12 +1,12 @@
 import random
 import textwrap
 from config.config import redis, QUIZ_DICT
-from utils.utils import get_random_question
+from utils.utils import get_random_question, get_questions
 from keyboards.keyboard import get_start_keyboard
 
 
 def get_question(event, vk_api) -> None:
-    question = get_random_question(QUIZ_DICT)
+    question = get_random_question(get_questions(QUIZ_DICT))
     redis.set(event.user_id, question)
     vk_api.messages.send(
         peer_id=123456,
@@ -18,7 +18,7 @@ def get_question(event, vk_api) -> None:
 
 
 def check_answer_handler(event, vk_api) -> None:
-    answer = QUIZ_DICT.get(f'{redis.get(event.user_id)}')
+    answer = get_questions(QUIZ_DICT).get(f'{redis.get(event.user_id)}')
     if event.text != answer:
         vk_api.messages.send(
             peer_id=123456,
@@ -38,7 +38,7 @@ def check_answer_handler(event, vk_api) -> None:
 
 
 def conversation_handler(event, vk_api) -> None:
-    full_answer = QUIZ_DICT.get(f'{redis.get(event.user_id)}')
+    full_answer = get_questions(QUIZ_DICT).get(f'{redis.get(event.user_id)}')
     vk_api.messages.send(
         peer_id=123456,
         user_id=event.user_id,

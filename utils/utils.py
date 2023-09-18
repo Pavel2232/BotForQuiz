@@ -4,7 +4,7 @@ import random
 
 from config.config import BASE_DIR
 
-QUIZ_FILE = BASE_DIR.joinpath('quiz_question')
+QUIZ_DIR = BASE_DIR.joinpath('quiz_question')
 
 
 def write_json_by_file(path: str) -> None:
@@ -35,4 +35,4 @@ def get_random_question(dictionary) -> str:
     return random.choice(list(dictionary.keys()))
 
 
-write_json_by_file(QUIZ_FILE)
+write_json_by_file(QUIZ_DIR)
