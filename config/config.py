@@ -4,7 +4,8 @@ from environs import Env
 import redis
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
+QUIZ_DICT = BASE_DIR.joinpath('questions.json')
 
 env = Env()
 env.read_env('.env')

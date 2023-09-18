@@ -1,11 +1,10 @@
 import random
 from aiogram.types import Message
 import textwrap
-from config import redis
+from config.config import redis, QUIZ_DICT
 from keyboards.reply import get_quiz_keyboard
-from utils import get_questions, get_random_question
+from utils.utils import get_questions, get_random_question
 
-QUIZ_DICT = get_questions('questions.json')
 
 
 async def command_start_handler(message: Message) -> None:

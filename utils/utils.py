@@ -1,9 +1,8 @@
 import json
 import os
 import random
-from pathlib import Path
 
-from config import BASE_DIR
+from config.config import BASE_DIR
 
 QUIZ_FILE = BASE_DIR.joinpath('quiz_question')
 
@@ -14,7 +13,7 @@ def write_json_by_file(path: str) -> None:
     answers = []
     data = {}
     for file in dirs:
-        with open(f'{path}/{file}', 'r', encoding='KOI8-R') as f, open('BotForQuiz/questions.json', 'w', encoding='UTF-8') as fw:
+        with open(f'{path}/{file}', 'r', encoding='KOI8-R') as f, open(f'{BASE_DIR}/questions.json', 'w', encoding='UTF-8') as fw:
             quiz = f.read()
             qa = quiz.split('\n\n')
             for trivia in qa:

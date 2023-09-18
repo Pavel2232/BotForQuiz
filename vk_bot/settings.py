@@ -4,7 +4,7 @@ import sys
 from vk_api.longpoll import VkLongPoll
 import vk_api as vk
 
-from config import env
+from config.config import env
 
 logger = logging.getLogger('BotVK')
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',

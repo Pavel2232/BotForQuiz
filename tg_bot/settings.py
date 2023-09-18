@@ -3,7 +3,7 @@ import sys
 
 from aiogram import Dispatcher, Bot
 
-from config import env
+from config.config import env
 
 logger = logging.getLogger('BotTG')
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',

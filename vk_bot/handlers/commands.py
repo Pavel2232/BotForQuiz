@@ -1,8 +1,7 @@
 import random
 import textwrap
-from config import redis
-from tg_bot.handlers.commands import QUIZ_DICT
-from utils import get_random_question
+from config.config import redis, QUIZ_DICT
+from utils.utils import get_random_question
 from keyboards.keyboard import get_start_keyboard
 
 
