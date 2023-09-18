@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "botforquiz"
+version = "0.1.0"
+description = ""
+authors = ["Pavel2232 <106510078+Pavel2232@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiogram = "^3.0.0"
+environs = "^9.5.0"
+redis = "^5.0.0"
+vk-api = "^11.9.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
