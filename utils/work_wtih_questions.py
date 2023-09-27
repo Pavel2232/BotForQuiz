@@ -2,9 +2,14 @@ import json
 import os
 import random
 
-from config.config import BASE_DIR
+from environs import Env
 
-QUIZ_DIR = BASE_DIR.joinpath('quiz_question')
+from config.db import BASE_DIR
+
+env = Env()
+env.read_env('.env')
+
+QUIZ_DIR = BASE_DIR.joinpath(env('QUIZ_DIR'))
 
 
 def write_json_by_file(path: str) -> None:
@@ -13,7 +18,7 @@ def write_json_by_file(path: str) -> None:
     answers = []
     data = {}
     for file in dirs:
-        with open(f'{path}/{file}', 'r', encoding='KOI8-R') as f, open(f'{BASE_DIR}/questions.json', 'w', encoding='UTF-8') as fw:
+        with open(f'{path}/{file}', 'r', encoding='KOI8-R') as f:
             quiz = f.read()
             qa = quiz.split('\n\n')
             for trivia in qa:
@@ -21,9 +26,10 @@ def write_json_by_file(path: str) -> None:
                     questions.append(trivia[10:].rstrip())
                 elif trivia.startswith('Ответ:'):
                     answers.append(trivia[6:].rstrip())
-            for question, answer in zip(questions, answers):
-                data[question] = answer
-            json.dump(data, fw, ensure_ascii=False)
+            with open(f'{BASE_DIR}/questions.json', 'w', encoding='UTF-8') as fw:
+                for question, answer in zip(questions, answers):
+                    data[question] = answer
+                json.dump(data, fw, ensure_ascii=False)
 
 
 def get_questions(file) -> dict:
@@ -35,4 +41,5 @@ def get_random_question(dictionary) -> str:
     return random.choice(list(dictionary.keys()))
 
 
-write_json_by_file(QUIZ_DIR)
+if __name__ == '__main__':
+    write_json_by_file(QUIZ_DIR)

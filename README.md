@@ -16,6 +16,9 @@
 * VK_CHAT_ID=ваш чат айди
 * REDIS_PORT=указать порт
 * REDIS_HOST=указать хост
+* QUIZ_DIR = название папки с txt вопросами
+* QUIZ_DICT = json с готовыми вопросами с ответами
+* PEER_ID = рандомные 6 чисел
 
 4. В docker-compose заполните 
 ```      
@@ -26,7 +29,7 @@
 * Собрать образ redis выполнив ```docker-compose up -d```
 
 
-4. Для запуска программы:
+5. Для запуска программы:
 ```python tg_bot/tg_bot.py```
 ```python vk_bot/vk_bot.py```
 
