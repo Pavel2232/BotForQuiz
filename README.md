@@ -18,6 +18,12 @@
 * REDIS_HOST=указать хост
 * QUIZ_DIR = название папки с txt вопросами
 * QUIZ_DICT = json с готовыми вопросами с ответами
+- воспользуйтесь командой 
+```python
+   cd functions
+   python work_with_questions.py
+```
+для создания json с вопросами(ответами)
 * PEER_ID = рандомные 6 чисел
 
 4. В docker-compose заполните 
