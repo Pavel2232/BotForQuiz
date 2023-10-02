@@ -44,8 +44,7 @@ async def conversation_handler(message: Message) -> None:
                          reply_markup=get_quiz_keyboard())
 
 
-async def main() -> None:
-    global redis
+if __name__ == "__main__":
     load_dotenv(Path(__file__).resolve().parent.parent.joinpath('.env'))
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -61,8 +60,4 @@ async def main() -> None:
     dp.message.register(get_new_question_handler, F.text == 'Новый вопрос')
     dp.message.register(conversation_handler, F.text == 'Сдаться')
     dp.message.register(check_answer_handler)
-    await dp.start_polling(bot)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(dp.start_polling(bot))
