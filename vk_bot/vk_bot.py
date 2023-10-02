@@ -16,7 +16,7 @@ from keyboards.keyboard import get_start_keyboard
 def get_question(event, vk_api) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
         question = random.choice(list(json.load(f).keys()))
-    redis.set(event.user_id, question)
+    redis_db.set(event.user_id, question)
     vk_api.messages.send(
         peer_id=os.getenv('PEER_ID'),
         user_id=event.user_id,
@@ -28,7 +28,7 @@ def get_question(event, vk_api) -> None:
 
 def check_answer_handler(event, vk_api) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
-        answer = json.load(f).get(redis.get(event.user_id))
+        answer = json.load(f).get(redis_db.get(event.user_id))
     if event.text != answer:
         vk_api.messages.send(
             peer_id=os.getenv('PEER_ID'),
@@ -49,7 +49,7 @@ def check_answer_handler(event, vk_api) -> None:
 
 def conversation_handler(event, vk_api) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
-        full_answer = json.load(f).get(redis.get(event.user_id))
+        full_answer = json.load(f).get(redis_db.get(event.user_id))
     vk_api.messages.send(
         peer_id=os.getenv('PEER_ID'),
         user_id=event.user_id,
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     load_dotenv(Path(__file__).resolve().parent.parent.joinpath('.env'))
     pool = redis.ConnectionPool(host=os.getenv('REDIS_HOST'), port=int(os.getenv('REDIS_PORT')), db=0,
                                 decode_responses=True)
-    redis = redis.Redis(connection_pool=pool)
+    redis_db = redis.Redis(connection_pool=pool)
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=logging.INFO,

@@ -21,13 +21,13 @@ async def command_start_handler(message: Message) -> None:
 async def get_new_question_handler(message: Message) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
         question = random.choice(list(json.load(f).keys()))
-    redis.set(message.from_user.id, question)
+    redis_db.set(message.from_user.id, question)
     await message.answer(text=question)
 
 
 async def check_answer_handler(message: Message) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
-        answer = json.load(f).get(redis.get(message.from_user.id))
+        answer = json.load(f).get(redis_db.get(message.from_user.id))
     if message.text != answer:
         await message.answer('Неправильно… Попробуешь ещё раз?')
     else:
@@ -37,7 +37,7 @@ async def check_answer_handler(message: Message) -> None:
 
 async def conversation_handler(message: Message) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
-        full_answer = json.load(f).get(redis.get(message.from_user.id))
+        full_answer = json.load(f).get(redis_db.get(message.from_user.id))
     await message.answer(text=textwrap.dedent(f'''
         Правильный ответ: {full_answer}
         Для следующего вопроса нажми «Новый вопрос»'''),
@@ -53,7 +53,7 @@ if __name__ == "__main__":
                         )
     pool = redis.ConnectionPool(host=os.getenv('REDIS_HOST'), port=int(os.getenv('REDIS_PORT')), db=0,
                                 decode_responses=True)
-    redis = redis.Redis(connection_pool=pool)
+    redis_db = redis.Redis(connection_pool=pool)
     dp = Dispatcher()
     bot = Bot(os.getenv('TG_BOT_TOKEN'))
     dp.message.register(command_start_handler, CommandStart())
