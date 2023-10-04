@@ -13,7 +13,7 @@ from vk_api.longpoll import VkEventType, VkLongPoll
 from keyboards.keyboard import get_start_keyboard
 
 
-def get_question(event, vk_api) -> None:
+def get_question(event, vk_api, redis_db) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
         question = random.choice(list(json.load(f).keys()))
     redis_db.set(event.user_id, question)
@@ -26,7 +26,7 @@ def get_question(event, vk_api) -> None:
     )
 
 
-def check_answer_handler(event, vk_api) -> None:
+def check_answer_handler(event, vk_api, redis_db) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
         answer = json.load(f).get(redis_db.get(event.user_id))
     if event.text != answer:
@@ -47,7 +47,7 @@ def check_answer_handler(event, vk_api) -> None:
         )
 
 
-def conversation_handler(event, vk_api) -> None:
+def conversation_handler(event, vk_api, redis_db) -> None:
     with open(f'{Path(__file__).resolve().parent.parent.joinpath(os.getenv("QUIZ_DICT"))}', 'r', encoding='UTF-8') as f:
         full_answer = json.load(f).get(redis_db.get(event.user_id))
     vk_api.messages.send(
@@ -79,8 +79,8 @@ if __name__ == "__main__":
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             if event.text == 'Новый вопрос':
-                get_question(event, vk_api)
+                get_question(event, vk_api, redis_db)
             elif event.text == 'Сдаться':
-                conversation_handler(event, vk_api)
+                conversation_handler(event, vk_api, redis_db)
             else:
-                check_answer_handler(event, vk_api)
+                check_answer_handler(event, vk_api, redis_db)
